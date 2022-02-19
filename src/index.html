@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful Bridges</title>
+  <link href="output.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="container">Loading...</div>
+  <textarea id="data-input" rows="10"></textarea>
+
+  <script type="text/template" id="index-template">
+    <h3>Hello <%= who %></h3>
+
+    <% if(this.error) { %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Error: </strong>
+      <span class="block sm:inline"><%= this.error %></span>
+    </div>
+    <% } %>
+  
+    <button id="solve-btn">
+      Solve
+    </button>
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\\\(","\\\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+        TeX: {
+            extensions: ["begingroup.js"],
+            noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, 
+            Macros: { href: "{}" } 
+        },
+        messageStyle: "none",
+        styles: { ".MathJax_Display, .MathJax_Preview, .MathJax_Preview > *": { "background": "inherit" } },
+        SEEditor: "mathjaxEditing"
+});
+</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML-full"></script>
+  <script type="text/javascript" src="bundle.js"></script>
+</body>
+
+</html>

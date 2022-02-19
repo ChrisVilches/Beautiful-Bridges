@@ -1,0 +1,26 @@
+{
+  "name": "beautifulbridges",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run tailwind && node build.js",
+    "tailwind": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "format": "standard --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "^16.0.4",
+    "tailwindcss": "^3.0.23"
+  },
+  "dependencies": {
+    "backbone": "^1.4.0",
+    "esbuild": "^0.14.23",
+    "jquery": "^3.6.0",
+    "mathjax": "^3.2.0",
+    "three": "^0.137.5",
+    "underscore": "^1.13.2"
+  }
+}
