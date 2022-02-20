@@ -18,7 +18,18 @@ import { FormInput } from './FormInput'
 const IndexView = Backbone.View.extend({
   el: '#container',
   initialize: function () {
+    Backbone.Subviews.add(this)
     this.initializeGraphics()
+  },
+  subviewCreators: {
+    'raw-input-subview': function () {
+      this.rawInput = new RawInput()
+      return this.rawInput
+    },
+    'form-input-subview': function () {
+      this.formInput = new FormInput()
+      return this.formInput
+    }
   },
   initializeGraphics: function () {
     function render () {
@@ -35,9 +46,6 @@ const IndexView = Backbone.View.extend({
   resetCameraPosition: () => { throw new Error('Cannot reset camera yet') },
   resetCameraPositionHandle: function () {
     this.resetCameraPosition()
-  },
-  setInputChild: function (el) {
-    this.$el.find('#input-container').html(el)
   },
   solveLoading: false,
   scene: null,
@@ -97,21 +105,6 @@ const IndexView = Backbone.View.extend({
     this.$el.html(this.template())
     this.$el.find('#render-container').html(this.renderer.domElement)
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
-
-    if (!this.formInput || !this.rawInput) {
-      console.log('BUILDING NEW CHILDREN VIEWS')
-      this.formInput = new FormInput()
-      this.rawInput = new RawInput()
-    }
-
-    this.formInput.$el = this.$el.find('#input-container')
-    this.rawInput.$el = this.$el.find('#input-container')
-
-    if (this.currentTab === 'raw') {
-      this.rawInput.render()
-    } else {
-      this.formInput.render()
-    }
 
     return this
   }

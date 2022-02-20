@@ -2,7 +2,10 @@ import { IndexView } from './views/IndexView'
 import $ from 'jquery'
 import 'flowbite'
 import Backbone from 'backbone'
+import BackboneSubview from 'backbone-subviews'
 import { initializeWorker } from './worker-client'
+
+Backbone.View.extend(BackboneSubview)
 
 $(() => {
   initializeWorker()

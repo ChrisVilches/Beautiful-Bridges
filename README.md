@@ -17,9 +17,28 @@ My solutions: solved in [C++](https://github.com/ChrisVilches/Algorithms/blob/ma
 
 ## Development
 
+Lint and format:
+
 ```
 npm run format
+```
+
+Watch file changes:
+
+```
+npm run tailwind:watch
+npm run jshtml:watch
+```
+
+Build without watching file changes:
+
+```
 npm run build
+
+# or
+
+npm run tailwind:build
+npm run jshtml:build
 ```
 
 Then, open `dist/index.html` in the browser.

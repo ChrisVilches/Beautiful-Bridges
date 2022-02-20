@@ -4,6 +4,7 @@ const path = require('path')
 
 const SRC = 'src'
 const DIST = 'dist'
+const WATCH = Boolean(process.argv.find(a => a === '--watch'))
 
 if (!fs.existsSync(DIST)) {
   fs.mkdirSync(DIST)
@@ -11,15 +12,13 @@ if (!fs.existsSync(DIST)) {
 
 // TODO: Should be target: ES5
 // TODO: Should minify
-// TODO: Can listen to JS changes, but cannot be configured via args
-// TODO: Listens to JS (and can listen to CSS with the tailwind command), but doesn't listen to HTML changes.
 
 esbuild.build({
   entryPoints: [path.join(SRC, 'app.js')],
   bundle: true,
   minify: !true,
   sourcemap: true,
-  watch: true,
+  watch: WATCH,
   target: ['es6'],
   outfile: path.join(DIST, 'bundle.js')
 })
@@ -29,12 +28,24 @@ esbuild.build({
   bundle: true,
   minify: !true,
   sourcemap: true,
-  watch: true,
+  watch: WATCH,
   target: ['es6'],
   outfile: path.join(DIST, 'worker.js')
 })
 
-// TODO: Does not overwrite the file?
-fs.copyFile(path.join(SRC, 'index.html'), path.join(DIST, 'index.html'), err => {
-  if (err) throw err
-})
+function copyFile (src, dest, watch = false) {
+  // TODO: Does not overwrite the file?
+  const copy = () => {
+    fs.copyFile(src, dest, err => {
+      if (err) throw err
+    })
+  }
+
+  copy()
+
+  if (watch) {
+    fs.watchFile(src, copy)
+  }
+}
+
+copyFile(path.join(SRC, 'index.html'), path.join(DIST, 'index.html'), WATCH)
