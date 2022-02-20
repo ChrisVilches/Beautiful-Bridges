@@ -16,6 +16,17 @@ import { FormInput } from './FormInput'
 // TODO: Maybe a bit too long (verbose)
 //       For example, the form input and events can be moved to a different view, maybe.
 
+function resizeRendererToDisplaySize (renderer) {
+  const canvas = renderer.domElement
+  const width = canvas.clientWidth
+  const height = canvas.clientHeight
+  const needResize = (canvas.width !== width || canvas.height !== height) && width > 0 && height > 0
+  if (needResize) {
+    renderer.setSize(width, height, false)
+  }
+  return needResize
+}
+
 const IndexView = Backbone.View.extend({
   el: '#container',
   initialize: function () {
@@ -36,6 +47,12 @@ const IndexView = Backbone.View.extend({
     function render () {
       requestAnimationFrame(render)
       renderer.render(scene, camera)
+
+      if (resizeRendererToDisplaySize(renderer)) {
+        const canvas = renderer.domElement
+        camera.aspect = canvas.clientWidth / canvas.clientHeight
+        camera.updateProjectionMatrix()
+      }
     }
 
     const { renderer, scene, camera, resetCameraPosition } = createScene(this.$el.find('#render-container'))
@@ -74,6 +91,10 @@ const IndexView = Backbone.View.extend({
 
     this.render()
     this.solveUsingCurrentInput()
+
+    $('html, body').animate({
+      scrollTop: this.$el.find('#render-container').offset().top
+    }, 100)
   },
   solveUsingCurrentInput: function () {
     let input

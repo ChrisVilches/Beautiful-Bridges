@@ -28,11 +28,7 @@ const PLANE_WIDTH = 35
 
 // TODO: Should be configurable, for example choose which element to transform into the canvas, size, etc.
 function createScene () {
-  const WIDTH = 800
-  const HEIGHT = 400
-
   const renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setSize(WIDTH, HEIGHT)
   renderer.setClearColor(0xDDDDDD, 1)
 
   const scene = new THREE.Scene()
