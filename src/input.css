@@ -84,9 +84,13 @@
   @apply active;
 }
 
-#render-container canvas {
+#render-canvas-container canvas {
   width: 100%;
   height: 100%;
-  display: block;
+  @apply block;
+}
+
+#render-container {
+  @apply m-auto;
   @apply lg:w-2/3;
 }

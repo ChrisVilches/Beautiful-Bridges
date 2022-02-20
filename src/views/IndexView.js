@@ -55,7 +55,7 @@ const IndexView = Backbone.View.extend({
       }
     }
 
-    const { renderer, scene, camera, resetCameraPosition } = createScene(this.$el.find('#render-container'))
+    const { renderer, scene, camera, resetCameraPosition } = createScene(this.$el.find('#render-canvas-container'))
     this.renderer = renderer
     this.scene = scene
     this.resetCameraPosition = resetCameraPosition
@@ -93,7 +93,7 @@ const IndexView = Backbone.View.extend({
     this.solveUsingCurrentInput()
 
     $('html, body').animate({
-      scrollTop: this.$el.find('#render-container').offset().top
+      scrollTop: this.$el.find('#render-canvas-container').offset().top
     }, 100)
   },
   solveUsingCurrentInput: function () {
@@ -126,7 +126,7 @@ const IndexView = Backbone.View.extend({
   },
   render: function () {
     this.$el.html(this.template())
-    this.$el.find('#render-container').html(this.renderer.domElement)
+    this.$el.find('#render-canvas-container').html(this.renderer.domElement)
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
 
     return this
