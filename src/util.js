@@ -9,7 +9,9 @@ const parseInput = content => {
   const [N, H, alpha, beta] = removeExtraWhiteSpace(lines[0]).split(' ').map(Number)
   const ground = []
   for (let i = 0; i < N; i++) {
-    const [x, y] = removeExtraWhiteSpace(lines[i + 1]).split(' ').map(Number)
+    const line = lines[i + 1]
+    if (typeof line !== 'string') continue
+    const [x, y] = removeExtraWhiteSpace(line).split(' ').map(Number)
     ground.push({ x, y })
   }
 
@@ -21,6 +23,7 @@ const getInputErrors = data => {
 
   if (!(N >= 2 && N <= 10000)) return '$N$ must satisfy $2 \\leq N \\leq 10^4$'
   if (!(H >= 1 && H <= 100000)) return '$H$ (height) must satisfy $1 \\leq H \\leq 10^5$'
+  if (N !== ground.length) return '$N$ and the actual number of elements in the array differ'
 
   const alphaBetaErr = '$α, β$ must satisfy $1 \\leq α, β \\leq 10^4$'
 

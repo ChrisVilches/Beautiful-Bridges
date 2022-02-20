@@ -16,7 +16,7 @@ const solve = args => {
 self.onmessage = function (e) {
   switch (e.data.cmd) {
     case 'solve':
-      self.postMessage({ type: 'solve-response', body: solve(e.data.args) })
+      self.postMessage({ type: 'solve-response', body: { ...solve(e.data.args), requestId: e.data.args.requestId } })
       break
     default:
       console.error('Incorrect command')

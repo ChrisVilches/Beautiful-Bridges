@@ -1,9 +1,12 @@
 /* eslint-env browser */
 
 let worker = null
+let requestId = 0
+let responseId
+const callbacks = {}
 
 // TODO: A bit weird that only one callback can be set. I'd like to obtain results from many places, in controlled ways.
-function initializeWorker (cb) {
+function initializeWorker () {
   if (worker !== null) return
   worker = new Worker('worker.js')
 
@@ -11,7 +14,11 @@ function initializeWorker (cb) {
     switch (e.data.type) {
       case 'solve-response':
         console.log('Response from worker:', e.data.body)
-        cb(e.data.body.H, e.data.body.ground, e.data.body.solution)
+
+        responseId = e.data.body.requestId
+        callbacks[responseId](e.data.body.cost, e.data.body.solution)
+        delete callbacks[responseId]
+
         break
       default:
         console.error(`Incorrect response type: ${e.data.type}`)
@@ -19,16 +26,20 @@ function initializeWorker (cb) {
   }
 }
 
-function dispatchSolve (N, H, alpha, beta, ground) {
+function solve (N, H, alpha, beta, ground, callback) {
+  callbacks[requestId] = callback
+
   worker.postMessage({
     cmd: 'solve',
     args: {
-      N, H, alpha, beta, ground
+      requestId, N, H, alpha, beta, ground
     }
   })
+
+  requestId++
 }
 
 module.exports = {
   initializeWorker,
-  dispatchSolve
+  solve
 }
