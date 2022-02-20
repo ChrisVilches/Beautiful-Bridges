@@ -21,3 +21,5 @@ My solutions: solved in [C++](https://github.com/ChrisVilches/Algorithms/blob/ma
 npm run format
 npm run build
 ```
+
+Then, open `dist/index.html` in the browser.
