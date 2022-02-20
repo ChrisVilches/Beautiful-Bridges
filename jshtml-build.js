@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 
 const SRC = 'src'
+const ASSETS = 'assets'
 const DIST = 'dist'
 const WATCH = Boolean(process.argv.find(a => a === '--watch'))
 
@@ -11,7 +12,7 @@ if (!fs.existsSync(DIST)) {
 }
 
 // TODO: Should be target: ES5
-// TODO: Should minify
+// TODO: Asset copying could be better.
 
 const jsCommonOpts = {
   bundle: true,
@@ -48,3 +49,7 @@ function copyFile (src, dest, watch = false) {
 }
 
 copyFile(path.join(SRC, 'index.html'), path.join(DIST, 'index.html'), WATCH)
+
+// TODO: Copy the folder or use /**/*.jpg would be better.
+copyFile(path.join(ASSETS, 'ground-texture.jpg'), path.join(DIST, 'ground-texture.jpg'), WATCH)
+copyFile(path.join(ASSETS, 'steel-texture.jpg'), path.join(ASSETS, 'steel-texture.jpg'), WATCH)

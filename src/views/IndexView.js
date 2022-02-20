@@ -9,6 +9,7 @@ import $ from 'jquery'
 import sample1 from '../../assets/sample1.json'
 import sample2 from '../../assets/sample2.json'
 import sample3 from '../../assets/sample3.json'
+import sample4 from '../../assets/sample4.json'
 import { RawInput } from './RawInput'
 import { FormInput } from './FormInput'
 
@@ -66,6 +67,7 @@ const IndexView = Backbone.View.extend({
       case 1: sample = sample1; break
       case 2: sample = sample2; break
       case 3: sample = sample3; break
+      case 4: sample = sample4; break
     }
     this.formInput.setInputData(deepClone(sample))
     this.rawInput.setInputData(deepClone(sample))

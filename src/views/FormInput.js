@@ -76,7 +76,7 @@ const FormInput = Backbone.View.extend({
     this.formInput.ground[idx][type] = value
   },
   onClickRemoveInputGround: function (e) {
-    const input = $(e.target)
+    const input = $(e.currentTarget)
     const idx = Number(input.attr('data-index'))
     this.formInput.ground.splice(idx, 1)
     this.render()

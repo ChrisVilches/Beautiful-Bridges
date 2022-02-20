@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import _ from 'underscore'
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls'
 
 /*
@@ -51,16 +52,37 @@ function createScene () {
   return { renderer, scene, camera, resetCameraPosition }
 }
 
+function createMaterialWithTexture (texturePath, color) {
+  const material = new THREE.MeshBasicMaterial()
+  const loader = new THREE.TextureLoader()
+  loader.load(texturePath,
+    function (texture) {
+      material.map = texture
+      if (typeof color !== 'undefined' && color !== null) {
+        material.color = new THREE.Color(color)
+      }
+      material.needsUpdate = true
+      material.side = THREE.DoubleSide
+    })
+  return material
+}
+
+// Create several textures with a different color each. Then pick a random one for each part of the bridge (plane, arc, etc).
+
+const steelMaterials = [0x9B9B9B, 0xB3B3B3, 0xBFBFBF, 0x888888].map(color => createMaterialWithTexture('./steel-texture.jpg', color))
+const groundMaterials = [0x6B545A, 0x6C5D61, 0x8E8487, 0xE1C8AE].map(color => createMaterialWithTexture('./ground-texture.jpg', color))
+
+const steelMaterial = () => _.sample(steelMaterials)
+const groundMaterial = () => _.sample(groundMaterials)
+
 function renderGround (scene, ground) {
   for (let i = 0; i < ground.length - 1; i++) {
     const dx = ground[i + 1].x - ground[i].x
     const dy = ground[i + 1].y - ground[i].y
 
     const length = Math.sqrt((dx * dx) + (dy * dy))
-
     const geometry = new THREE.PlaneGeometry(length, PLANE_WIDTH)
-    const material = new THREE.MeshBasicMaterial({ color: i % 2 === 0 ? 0x5F4444 : 0x795353, side: THREE.DoubleSide })
-    const plane = new THREE.Mesh(geometry, material)
+    const plane = new THREE.Mesh(geometry, groundMaterial())
 
     let ang = Math.atan(dx / dy)
     ang = Math.atan2(dy, dx)
@@ -95,8 +117,7 @@ function renderArcs (scene, bridgeHeight, solutionArcs, ground) {
     const radius = (ground[to].x - ground[from].x) / 2
 
     const geometry = new THREE.CylinderGeometry(radius, radius, PLANE_WIDTH, 15, 1, true, 0, Math.PI)
-    const material = new THREE.MeshBasicMaterial({ color: 0x454545, side: THREE.DoubleSide })
-    const cylinder = new THREE.Mesh(geometry, material)
+    const cylinder = new THREE.Mesh(geometry, steelMaterial())
 
     const centerX = ground[from].x + radius
     const centerY = bridgeHeight - radius
@@ -110,8 +131,7 @@ function renderArcs (scene, bridgeHeight, solutionArcs, ground) {
 function renderOnePillar (scene, bridgeHeight, ground, position, radius) {
   const length = bridgeHeight - ground[position].y - radius
   const geometry = new THREE.PlaneGeometry(length, PLANE_WIDTH)
-  const material = new THREE.MeshBasicMaterial({ color: 0x454545, side: THREE.DoubleSide })
-  const plane = new THREE.Mesh(geometry, material)
+  const plane = new THREE.Mesh(geometry, steelMaterial())
 
   plane.position.set(ground[position].x, 0, ground[position].y + length / 2)
   plane.rotation.set(0, Math.PI / 2, 0)
