@@ -18,10 +18,18 @@ const parseInput = content => {
   return { N, H, alpha, beta, ground }
 }
 
+const jsonInputToRaw = json => {
+  const strings = [`${json.ground.length} ${json.height} ${json.alpha} ${json.beta}`]
+  json.ground.forEach(ground => {
+    strings.push(`${ground.x} ${ground.y}`)
+  })
+  return strings.join('\n')
+}
+
 const getInputErrors = data => {
   const { N, H, alpha, beta, ground } = data
 
-  if (!(N >= 2 && N <= 10000)) return '$N$ must satisfy $2 \\leq N \\leq 10^4$'
+  if (!(N >= 2 && N <= 10000)) return '$N$ (number of ground points) must satisfy $2 \\leq N \\leq 10^4$'
   if (!(H >= 1 && H <= 100000)) return '$H$ (height) must satisfy $1 \\leq H \\leq 10^5$'
   if (N !== ground.length) return '$N$ and the actual number of elements in the array differ'
 
@@ -48,8 +56,12 @@ const getInputErrors = data => {
   return null
 }
 
+const deepClone = obj => JSON.parse(JSON.stringify(obj))
+
 module.exports = {
+  deepClone,
   getInputErrors,
   parseInput,
-  removeExtraWhiteSpace
+  removeExtraWhiteSpace,
+  jsonInputToRaw
 }

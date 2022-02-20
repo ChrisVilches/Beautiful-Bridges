@@ -54,3 +54,32 @@
   @apply rounded;
   @apply relative;
 }
+
+.tab-inactive {
+  @apply inline-block;
+  @apply py-4;
+  @apply px-4;
+  @apply text-sm;
+  @apply font-medium;
+  @apply text-center;
+  @apply text-gray-500;
+  @apply rounded-t-lg;
+  @apply border-b-2;
+  @apply border-transparent;
+  @apply hover:text-gray-600;
+  @apply hover:border-gray-300;
+}
+
+.tab-active {
+  @apply inline-block;
+  @apply py-4;
+  @apply px-4;
+  @apply text-sm;
+  @apply font-medium;
+  @apply text-center;
+  @apply text-blue-600;
+  @apply rounded-t-lg;
+  @apply border-b-2;
+  @apply border-blue-600;
+  @apply active;
+}
