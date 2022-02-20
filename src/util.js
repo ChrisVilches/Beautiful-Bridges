@@ -42,7 +42,7 @@ const getInputErrors = data => {
 
   for (let i = 0; i < ground.length; i++) {
     const y = ground[i].y
-    if (!(y >= 0 && y < H)) return '$y$ values must satisfy $0 \\leq yi \\leq h$'
+    if (!(y >= 0 && y < H)) return '$y$ values must satisfy $0 \\leq yi < h$'
   }
 
   return null

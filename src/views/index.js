@@ -6,24 +6,10 @@ import _ from 'underscore'
 import { parseInput, getInputErrors } from '../util'
 import { solve } from '../worker-client'
 import $ from 'jquery'
+import sample1 from '../../assets/sample1.txt'
+import sample2 from '../../assets/sample2.txt'
 
-const sample1 = `
-5 60 18 2
-0 0
-20 20
-30 10
-50 30
-70 20
-`
-
-const sample2 = `
-5 60 5 7
-0 0
-10 30
-50 57
-55 50
-60 20
-`
+// TODO: Maybe a bit too long (verbose)
 
 const IndexView = Backbone.View.extend({
   el: '#container',
@@ -39,10 +25,15 @@ const IndexView = Backbone.View.extend({
       renderer.render(scene, camera)
     }
 
-    const { renderer, scene, camera } = createScene(this.$el.find('#render-container'))
+    const { renderer, scene, camera, resetCameraPosition } = createScene(this.$el.find('#render-container'))
     this.renderer = renderer
     this.scene = scene
+    this.resetCameraPosition = resetCameraPosition
     render()
+  },
+  resetCameraPosition: () => { throw new Error('Cannot reset camera yet') },
+  resetCameraPositionHandle: function () {
+    this.resetCameraPosition()
   },
   solveLoading: false,
   scene: null,
@@ -50,7 +41,8 @@ const IndexView = Backbone.View.extend({
   events: {
     'click #solve-btn': 'solveFromTextarea',
     'click #sample-1': 'setSample1',
-    'click #sample-2': 'setSample2'
+    'click #sample-2': 'setSample2',
+    'click #reset-camera-btn': 'resetCameraPositionHandle'
   },
   error: null,
   currentSolutionCost: null,
@@ -73,16 +65,18 @@ const IndexView = Backbone.View.extend({
 
     if (!this.error) {
       const { N, H, alpha, beta, ground } = input
+      this.solveLoading = true
+      this.render()
       solve(N, H, alpha, beta, ground, (cost, solution) => {
         this.currentSolutionCost = cost
         drawBridge(this.scene, H, ground, solution)
         this.solveLoading = false
         this.render()
       })
+    } else {
+      this.solveLoading = false
+      this.render()
     }
-
-    this.solveLoading = true
-    this.render()
   },
   render: function () {
     this.$el.html(this.template())

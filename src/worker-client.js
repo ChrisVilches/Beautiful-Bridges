@@ -6,6 +6,7 @@ let responseId
 const callbacks = {}
 
 // TODO: A bit weird that only one callback can be set. I'd like to obtain results from many places, in controlled ways.
+//       (Update: I think it's solved now)
 function initializeWorker () {
   if (worker !== null) return
   worker = new Worker('worker.js')
@@ -16,8 +17,12 @@ function initializeWorker () {
         console.log('Response from worker:', e.data.body)
 
         responseId = e.data.body.requestId
-        callbacks[responseId](e.data.body.cost, e.data.body.solution)
-        delete callbacks[responseId]
+        if (responseId in callbacks) {
+          callbacks[responseId](e.data.body.cost, e.data.body.solution)
+          delete callbacks[responseId]
+        } else {
+          console.warn(`Response ID ${responseId} was not handled`)
+        }
 
         break
       default:
@@ -27,16 +32,19 @@ function initializeWorker () {
 }
 
 function solve (N, H, alpha, beta, ground, callback) {
-  callbacks[requestId] = callback
-
-  worker.postMessage({
-    cmd: 'solve',
-    args: {
-      requestId, N, H, alpha, beta, ground
-    }
-  })
-
+  const rId = requestId
   requestId++
+
+  callbacks[rId] = callback
+
+  setTimeout(() => {
+    worker.postMessage({
+      cmd: 'solve',
+      args: {
+        requestId: rId, N, H, alpha, beta, ground
+      }
+    })
+  }, 500)
 }
 
 module.exports = {

@@ -14,7 +14,7 @@ if (!fs.existsSync(DIST)) {
 esbuild.build({
   entryPoints: [path.join(SRC, 'app.js')],
   bundle: true,
-  minify: true,
+  minify: !true,
   target: ['es6'],
   outfile: path.join(DIST, 'bundle.js')
 })
@@ -22,7 +22,7 @@ esbuild.build({
 esbuild.build({
   entryPoints: [path.join(SRC, 'worker.js')],
   bundle: true,
-  minify: true,
+  minify: !true,
   target: ['es6'],
   outfile: path.join(DIST, 'worker.js')
 })

@@ -29,13 +29,18 @@ function createScene () {
   const scene = new THREE.Scene()
 
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
-  camera.position.x = 35
-  camera.position.y = 150
-  camera.position.z = 100
-  new OrbitControls(camera, renderer.domElement) // eslint-disable-line no-new
+  const controls = new OrbitControls(camera, renderer.domElement) // eslint-disable-line no-new
+
+  const resetCameraPosition = () => {
+    // TODO: This position was improvised.
+    camera.position.set(0, -200, 0)
+    controls.update()
+  }
+
+  resetCameraPosition()
 
   scene.add(camera)
-  return { renderer, scene, camera }
+  return { renderer, scene, camera, resetCameraPosition }
 }
 
 function renderGround (scene, ground) {
@@ -123,6 +128,16 @@ function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
   renderBridgeTop(scene, bridgeHeight, ground)
   renderArcs(scene, bridgeHeight, solutionArcs, ground)
   renderPillars(scene, solutionArcs, bridgeHeight, ground)
+
+  // TODO: This is a hack to center all children. It's done this
+  //       way because the math used when rendering is inaccurate (positioning only).
+  const xLength = ground[ground.length - 1].x - ground[0].x
+
+  scene.traverse(function (child) {
+    if (child instanceof THREE.Mesh) {
+      child.position.set(child.position.x - xLength / 2, child.position.y, child.position.z - bridgeHeight / 2)
+    }
+  })
 }
 
 module.exports = {
