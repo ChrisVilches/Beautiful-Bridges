@@ -37,14 +37,12 @@ function solve (N, H, alpha, beta, ground, callback) {
 
   callbacks[rId] = callback
 
-  setTimeout(() => {
-    worker.postMessage({
-      cmd: 'solve',
-      args: {
-        requestId: rId, N, H, alpha, beta, ground
-      }
-    })
-  }, 500)
+  worker.postMessage({
+    cmd: 'solve',
+    args: {
+      requestId: rId, N, H, alpha, beta, ground
+    }
+  })
 }
 
 module.exports = {

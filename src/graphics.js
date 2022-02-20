@@ -13,7 +13,6 @@ TODO: This is rendered incorrectly:
 
 Actually I realized that the arcs sometimes look a bit deformed. Why is that? Probably another bug.
 
-
 This one is also wrong (render and possibly solution), but it seems it's a problem related to the algorithm? But how? The code is AC:
 
 5 60 5 7

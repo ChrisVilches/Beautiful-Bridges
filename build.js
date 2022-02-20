@@ -10,11 +10,16 @@ if (!fs.existsSync(DIST)) {
 }
 
 // TODO: Should be target: ES5
+// TODO: Should minify
+// TODO: Can listen to JS changes, but cannot be configured via args
+// TODO: Listens to JS (and can listen to CSS with the tailwind command), but doesn't listen to HTML changes.
 
 esbuild.build({
   entryPoints: [path.join(SRC, 'app.js')],
   bundle: true,
   minify: !true,
+  sourcemap: true,
+  watch: true,
   target: ['es6'],
   outfile: path.join(DIST, 'bundle.js')
 })
@@ -23,6 +28,8 @@ esbuild.build({
   entryPoints: [path.join(SRC, 'worker.js')],
   bundle: true,
   minify: !true,
+  sourcemap: true,
+  watch: true,
   target: ['es6'],
   outfile: path.join(DIST, 'worker.js')
 })
