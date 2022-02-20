@@ -1,6 +1,6 @@
 # Beautiful Bridges
 
-This is a small web application for visualizing the Beautiful Bridges problem, which appeared in the ACM-ICPC World Finals 2019 (competitive programming contest).
+This is a small web application for visualizing the [Beautiful Bridges](https://open.kattis.com/problems/beautifulbridges) problem, which appeared in the ACM-ICPC World Finals 2019 (competitive programming contest).
 
 Source problem statement: https://open.kattis.com/problems/beautifulbridges
 
