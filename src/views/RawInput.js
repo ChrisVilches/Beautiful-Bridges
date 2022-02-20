@@ -22,12 +22,9 @@ const RawInput = Backbone.View.extend({
   </div>
   `),
   events: {
-    'keyup #data-input': 'onChangeTextarea',
-    'click #data-input': 'onChangeTextarea'
+    'keyup #data-input': 'onChangeTextarea'
   },
   onChangeTextarea: function (e) {
-    console.log('hahaha')
-    console.log(this.inputValue)
     this.inputValue = e.target.value
   },
   render: function () {

@@ -102,11 +102,12 @@
       </ul>
     </div>
 
-    <% if (this.currentTab === 'raw') { %>
+    <div class="<%= this.currentTab === 'raw' ? '' : 'hidden' %>">
       <div data-subview="raw-input-subview"></div>
-    <% } else { %>
+    </div>
+    <div class="<%= this.currentTab === 'form' ? '' : 'hidden' %>">
       <div data-subview="form-input-subview"></div>
-    <% } %>
+    </div>
 
     <% if (this.error) { %>
     <div class="alert-error mb-4" role="alert">

@@ -13,28 +13,27 @@ if (!fs.existsSync(DIST)) {
 // TODO: Should be target: ES5
 // TODO: Should minify
 
-esbuild.build({
-  entryPoints: [path.join(SRC, 'app.js')],
+const jsCommonOpts = {
   bundle: true,
-  minify: !true,
+  minify: true,
   sourcemap: true,
   watch: WATCH,
-  target: ['es6'],
-  outfile: path.join(DIST, 'bundle.js')
+  target: ['es6']
+}
+
+esbuild.build({
+  entryPoints: [path.join(SRC, 'app.js')],
+  outfile: path.join(DIST, 'bundle.js'),
+  ...jsCommonOpts
 })
 
 esbuild.build({
   entryPoints: [path.join(SRC, 'worker.js')],
-  bundle: true,
-  minify: !true,
-  sourcemap: true,
-  watch: WATCH,
-  target: ['es6'],
-  outfile: path.join(DIST, 'worker.js')
+  outfile: path.join(DIST, 'worker.js'),
+  ...jsCommonOpts
 })
 
 function copyFile (src, dest, watch = false) {
-  // TODO: Does not overwrite the file?
   const copy = () => {
     fs.copyFile(src, dest, err => {
       if (err) throw err
