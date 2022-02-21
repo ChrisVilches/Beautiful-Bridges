@@ -15,7 +15,7 @@ See a [live demo](http://cloud.chrisvilches.com/live_demos/beautiful-bridges/) (
 * Three.js
 * Tailwind CSS + Flowbite
 * MathJax
-* esbuild
+* Webpack
 
 ## Development
 
