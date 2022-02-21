@@ -6,7 +6,7 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
   const arcLeftMax = new Array(N)
   const arcRightMax = new Array(N)
   const memo = new Array(N)
-  const solution = new Array(N)
+  const nextArc = new Array(N)
 
   const dist = (i, j) => abs(ground[i].x - ground[j].x)
   const pillarHeight = i => H - ground[i].y
@@ -48,11 +48,26 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
     arcLeftMax[point] = r
   }
 
-  const collectSolution = solutionFlagArray => {
+  const collectSolution = (nextArc, expectedCost) => {
     const solutionArcs = []
 
-    for (let i = 0; i < solutionFlagArray.length; i++) {
-      if (solutionFlagArray[i]) solutionArcs.push(i)
+    let i = 0
+    while (i < N) {
+      solutionArcs.push(i)
+      i = nextArc[i]
+    }
+
+    let cost = costPillar(N - 1)
+
+    for (let i = 0; i < solutionArcs.length - 1; i++) {
+      const from = solutionArcs[i]
+      const to = solutionArcs[i + 1]
+      cost += costPillar(from)
+      cost += costArc(from, to)
+    }
+
+    if (cost !== expectedCost) {
+      console.error(`Cost is not correct when collecting the solution (${cost} != ${expectedCost})`)
     }
 
     return solutionArcs
@@ -63,20 +78,15 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
     if (memo[n] !== -1) return memo[n]
 
     let minCost = Infinity
-    let nextArc = null
 
     for (let i = n + 1; i < N; i++) {
       if (arcPossible(n, i)) {
         const cost = costPillar(n) + costArc(n, i) + dp(i)
         if (cost < minCost) {
-          nextArc = i
+          nextArc[n] = i
           minCost = cost
         }
       }
-    }
-
-    if (nextArc !== null) {
-      solution[nextArc] = true
     }
 
     memo[n] = minCost
@@ -85,13 +95,7 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
 
   for (let i = 1; i < N; i++) precomputeArcBoundsLeft(i)
   for (let i = 0; i < N - 1; i++) precomputeArcBoundsRight(i)
-  for (let i = 0; i < N; i++) {
-    memo[i] = -1
-    solution[i] = false
-  }
-
-  solution[0] = true
-  solution[N - 1] = true
+  for (let i = 0; i < N; i++) memo[i] = -1
 
   // Avoid stack overflow error.
   for (let i = N - 1; i >= 0; i--) {
@@ -104,7 +108,7 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
     cost,
     H,
     ground,
-    solution: cost === Infinity ? [] : collectSolution(solution)
+    solution: cost === Infinity ? [] : collectSolution(nextArc, cost)
   }
 }
 

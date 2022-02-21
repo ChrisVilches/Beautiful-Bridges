@@ -4,6 +4,7 @@ import 'flowbite'
 import Backbone from 'backbone'
 import BackboneSubview from 'backbone-subviews'
 import { initializeWorker } from './worker-client'
+import './styles.css'
 
 Backbone.View.extend(BackboneSubview)
 

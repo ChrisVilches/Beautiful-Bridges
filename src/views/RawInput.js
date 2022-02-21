@@ -6,7 +6,7 @@ import { jsonInputToRaw, parseInput } from '../util'
 import sample1 from '../../assets/sample1.json'
 import rawInputTemplate from './raw-input-template.html'
 
-const RawInput = Backbone.View.extend({
+export const RawInput = Backbone.View.extend({
   initialize: function () {
     console.log('Raw input initialize')
   },
@@ -29,5 +29,3 @@ const RawInput = Backbone.View.extend({
     return this
   }
 })
-
-module.exports = { RawInput }

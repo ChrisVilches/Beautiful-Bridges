@@ -2,25 +2,27 @@ import _ from 'underscore'
 
 const spaceRegex = /\s+/g
 
-const removeExtraWhiteSpace = str => {
-  return str.replace(spaceRegex, ' ').trim()
-}
+const removeExtraWhiteSpace = str => str.replace(spaceRegex, ' ').trim()
 
-const parseInput = content => {
-  const lines = content.split('\n').filter(line => line.length > 0)
-  const [N, H, alpha, beta] = removeExtraWhiteSpace(lines[0]).split(' ').map(Number)
-  const ground = []
-  for (let i = 0; i < N; i++) {
-    const line = lines[i + 1]
-    if (typeof line !== 'string') continue
-    const [x, y] = removeExtraWhiteSpace(line).split(' ').map(Number)
-    ground.push({ x, y })
+export const parseInput = content => {
+  try {
+    const lines = content.split('\n').filter(line => line.length > 0)
+    const [N, H, alpha, beta] = removeExtraWhiteSpace(lines[0]).split(' ').map(Number)
+    const ground = []
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i + 1]
+      if (typeof line !== 'string') continue
+      const [x, y] = removeExtraWhiteSpace(line).split(' ').map(Number)
+      ground.push({ x, y })
+    }
+
+    return { N, H, alpha, beta, ground }
+  } catch (e) {
+    return {}
   }
-
-  return { N, H, alpha, beta, ground }
 }
 
-const jsonInputToRaw = json => {
+export const jsonInputToRaw = json => {
   const strings = [`${json.ground.length} ${json.height} ${json.alpha} ${json.beta}`]
   json.ground.forEach(ground => {
     strings.push(`${ground.x} ${ground.y}`)
@@ -28,7 +30,7 @@ const jsonInputToRaw = json => {
   return strings.join('\n')
 }
 
-const getInputErrors = data => {
+export const getInputErrors = data => {
   const { N, H, alpha, beta, ground } = data
 
   if (!(N >= 2 && N <= 10000)) return '$N$ (number of ground points) must satisfy $2 \\leq N \\leq 10^4$'
@@ -58,7 +60,7 @@ const getInputErrors = data => {
   return null
 }
 
-const randomBridge = () => {
+export const randomBridge = () => {
   const height = _.random(100, 200)
   const alpha = _.random(10, 100)
   const beta = _.random(10, 100)
@@ -86,13 +88,4 @@ const randomBridge = () => {
   }
 }
 
-const deepClone = obj => JSON.parse(JSON.stringify(obj))
-
-module.exports = {
-  deepClone,
-  getInputErrors,
-  parseInput,
-  removeExtraWhiteSpace,
-  jsonInputToRaw,
-  randomBridge
-}
+export const deepClone = obj => JSON.parse(JSON.stringify(obj))

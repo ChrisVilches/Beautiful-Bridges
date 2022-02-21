@@ -25,7 +25,7 @@ function resizeRendererToDisplaySize (renderer) {
   return needResize
 }
 
-const IndexView = Backbone.View.extend({
+export const IndexView = Backbone.View.extend({
   el: '#container',
   initialize: function () {
     Backbone.Subviews.add(this)
@@ -132,5 +132,3 @@ const IndexView = Backbone.View.extend({
     return this
   }
 })
-
-module.exports = { IndexView }

@@ -7,7 +7,7 @@ import sample1 from '../../assets/sample1.json'
 import $ from 'jquery'
 import formInputTemplate from './form-input-template.html'
 
-const FormInput = Backbone.View.extend({
+export const FormInput = Backbone.View.extend({
   initialize: function () {
     console.log('Form input initialize')
   },
@@ -61,5 +61,3 @@ const FormInput = Backbone.View.extend({
     return this
   }
 })
-
-module.exports = { FormInput }

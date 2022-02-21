@@ -25,22 +25,15 @@ Lint and format:
 npm run format
 ```
 
-Watch file changes:
+Development server with hot reloading:
 
 ```
-npm run tailwind:watch
-npm run jshtml:watch
+npm run dev
 ```
 
-Build without watching file changes:
+Build (create `/dist` folder):
 
 ```
-npm run build
-
-# or
-
-npm run tailwind:build
-npm run jshtml:build
+npm run build:development
+npm run build:production
 ```
-
-Then, open `dist/index.html` in the browser.

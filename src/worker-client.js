@@ -5,7 +5,7 @@ let requestId = 0
 let responseId
 const callbacks = {}
 
-function initializeWorker () {
+export function initializeWorker () {
   if (worker !== null) return
   worker = new Worker('worker.js')
 
@@ -29,7 +29,7 @@ function initializeWorker () {
   }
 }
 
-function solve (N, H, alpha, beta, ground, callback) {
+export function solve (N, H, alpha, beta, ground, callback) {
   const rId = requestId
   requestId++
 
@@ -41,9 +41,4 @@ function solve (N, H, alpha, beta, ground, callback) {
       requestId: rId, N, H, alpha, beta, ground
     }
   })
-}
-
-module.exports = {
-  initializeWorker,
-  solve
 }

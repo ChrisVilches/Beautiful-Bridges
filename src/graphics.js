@@ -1,34 +1,16 @@
+/* eslint-env browser */
+
 import * as THREE from 'three'
 import _ from 'underscore'
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls'
-
-/*
-TODO: This is rendered incorrectly:
-
-5 60 5 7
-0 0
-10 30
-40 55
-50 45
-60 20
-
-Actually I realized that the arcs sometimes look a bit deformed. Why is that? Probably another bug.
-
-This one is also wrong (render and possibly solution), but it seems it's a problem related to the algorithm? But how? The code is AC:
-
-5 60 5 7
-0 0
-10 30
-50 57
-55 50
-75 20
-*/
+import steelTexture from '../assets/steel-texture.jpg'
+import groundTexture from '../assets/ground-texture.jpg'
 
 const PLANE_WIDTH = 35
 
 const CAMERA_POSITION = [0, -200, 0]
 
-function createScene () {
+export function createScene () {
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setClearColor(0xDDDDDD, 1)
 
@@ -48,25 +30,26 @@ function createScene () {
   return { renderer, scene, camera, resetCameraPosition }
 }
 
-function createMaterialWithTexture (texturePath, color) {
+function createMaterialWithTexture (textureBase64, color) {
+  const image = new Image()
+  const texture = new THREE.Texture(image)
+  image.onload = () => { texture.needsUpdate = true }
+  image.src = textureBase64
+
   const material = new THREE.MeshBasicMaterial()
-  const loader = new THREE.TextureLoader()
-  loader.load(texturePath,
-    function (texture) {
-      material.map = texture
-      if (typeof color !== 'undefined' && color !== null) {
-        material.color = new THREE.Color(color)
-      }
-      material.needsUpdate = true
-      material.side = THREE.DoubleSide
-    })
+  material.map = texture
+  if (typeof color !== 'undefined' && color !== null) {
+    material.color = new THREE.Color(color)
+  }
+  material.needsUpdate = true
+  material.side = THREE.DoubleSide
   return material
 }
 
 // Create several textures with a different color each. Then pick a random one for each part of the bridge (plane, arc, etc).
 
-const steelMaterials = [0x9B9B9B, 0xB3B3B3, 0xBFBFBF, 0x888888].map(color => createMaterialWithTexture('./steel-texture.jpg', color))
-const groundMaterials = [0x6B545A, 0x6C5D61, 0x8E8487, 0xE1C8AE].map(color => createMaterialWithTexture('./ground-texture.jpg', color))
+const steelMaterials = [0x9B9B9B, 0xB3B3B3, 0xBFBFBF, 0x888888].map(color => createMaterialWithTexture(steelTexture, color))
+const groundMaterials = [0x6B545A, 0x6C5D61, 0x8E8487, 0xE1C8AE].map(color => createMaterialWithTexture(groundTexture, color))
 
 const steelMaterial = () => _.sample(steelMaterials)
 const groundMaterial = () => _.sample(groundMaterials)
@@ -140,7 +123,7 @@ function renderPillars (scene, solutionArcs, bridgeHeight, ground) {
   }
 }
 
-function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
+export function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
   scene.remove.apply(scene, scene.children)
 
   renderGround(scene, ground)
@@ -157,9 +140,4 @@ function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
       child.position.set(child.position.x - xLength / 2, child.position.y, child.position.z - bridgeHeight / 2)
     }
   })
-}
-
-module.exports = {
-  createScene,
-  drawBridge
 }
