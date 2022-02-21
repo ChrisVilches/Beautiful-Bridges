@@ -32,9 +32,22 @@ export const jsonInputToRaw = json => {
   return strings.join('\n')
 }
 
+const allDataIsInteger = data => {
+  const isInteger = x => Math.round(x) === x
+  const getValues = x => _.map(x, _.values)
+
+  const { N, H, alpha, beta, ground } = data
+
+  const allGroundXY = _.compose(_.flatten, getValues)(ground)
+  const allNumbers = [N, H, alpha, beta].concat(allGroundXY)
+
+  return _.every(allNumbers, isInteger)
+}
+
 export const getInputErrors = data => {
   const { N, H, alpha, beta, ground } = data
 
+  if (!allDataIsInteger(data)) return 'All numbers must be integers'
   if (!(N >= 2 && N <= 10000)) return '$N$ (number of ground points) must satisfy $2 \\leq N \\leq 10^4$'
   if (!(H >= 1 && H <= 100000)) return '$H$ (height) must satisfy $1 \\leq H \\leq 10^5$'
   if (N !== ground.length) return '$N$ and the actual number of elements in the array differ'
