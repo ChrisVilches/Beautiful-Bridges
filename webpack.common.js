@@ -29,7 +29,8 @@ module.exports = {
       template: path.join(__dirname, 'src', 'index.html'),
       filename: './index.html',
       chunks: ['app'],
-      hash: true
+      hash: true,
+      favicon: path.join(__dirname, 'assets', 'favicon', 'favicon.ico')
     }),
     new HtmlWebpackInjector()
   ],
