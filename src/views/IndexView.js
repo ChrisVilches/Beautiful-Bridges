@@ -33,7 +33,7 @@ export const IndexView = Backbone.View.extend({
   },
   subviewCreators: {
     'raw-input-subview': function () {
-      this.rawInput = new RawInput()
+      this.rawInput = new RawInput({ solve: this.solveUsingCurrentInput.bind(this) })
       return this.rawInput
     },
     'form-input-subview': function () {
@@ -97,6 +97,8 @@ export const IndexView = Backbone.View.extend({
     }, 0)
   },
   solveUsingCurrentInput: function () {
+    if (this.solveLoading) return
+
     let input
     if (this.currentTab === 'raw') {
       input = this.rawInput.getInputData()
