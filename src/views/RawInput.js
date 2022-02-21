@@ -3,7 +3,7 @@
 import Backbone from 'backbone'
 import _ from 'underscore'
 import { jsonInputToRaw, parseInput } from '../util'
-import sample1 from '../../assets/sample1.json'
+import sample1 from 'Samples/sample1.json'
 import rawInputTemplate from './raw-input-template.html'
 
 export const RawInput = Backbone.View.extend({

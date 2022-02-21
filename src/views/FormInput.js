@@ -3,7 +3,7 @@
 import Backbone from 'backbone'
 import _ from 'underscore'
 import { deepClone } from '../util'
-import sample1 from '../../assets/sample1.json'
+import sample1 from 'Samples/sample1.json'
 import $ from 'jquery'
 import formInputTemplate from './form-input-template.html'
 

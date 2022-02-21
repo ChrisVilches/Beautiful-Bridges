@@ -3,8 +3,8 @@
 import * as THREE from 'three'
 import _ from 'underscore'
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls'
-import steelTexture from '../assets/steel-texture.jpg'
-import groundTexture from '../assets/ground-texture.jpg'
+import steelTexture from 'Textures/steel-texture.jpg'
+import groundTexture from 'Textures/ground-texture.jpg'
 
 const PLANE_WIDTH = 35
 
@@ -30,11 +30,11 @@ export function createScene () {
   return { renderer, scene, camera, resetCameraPosition }
 }
 
-function createMaterialWithTexture (textureBase64, color) {
+function createMaterialWithTexture (imageUrl, color) {
   const image = new Image()
   const texture = new THREE.Texture(image)
   image.onload = () => { texture.needsUpdate = true }
-  image.src = textureBase64
+  image.src = imageUrl
 
   const material = new THREE.MeshBasicMaterial()
   material.map = texture

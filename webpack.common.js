@@ -6,21 +6,26 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = {
   entry: {
-    app: './src/app.js',
-    worker: './src/worker.js'
+    app: path.join(__dirname, 'src', 'app.js'),
+    worker: path.join(__dirname, 'src', 'worker.js')
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     clean: true
   },
-  devtool: 'source-map',
+  resolve: {
+    alias: {
+      Samples: path.join(__dirname, 'assets', 'samples'),
+      Textures: path.join(__dirname, 'assets', 'textures')
+    }
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'styles.css'
     }),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: path.join(__dirname, 'src', 'index.html'),
       filename: './index.html',
       chunks: ['app'],
       hash: true
@@ -39,15 +44,8 @@ module.exports = {
         loader: 'html-loader'
       },
       {
-        test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192
-            }
-          }
-        ]
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource'
       },
       {
         test: /\.css$/,
