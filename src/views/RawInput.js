@@ -4,6 +4,7 @@ import Backbone from 'backbone'
 import _ from 'underscore'
 import { jsonInputToRaw, parseInput } from '../util'
 import sample1 from '../../assets/sample1.json'
+import rawInputTemplate from './raw-input-template.html'
 
 const RawInput = Backbone.View.extend({
   initialize: function () {
@@ -16,11 +17,7 @@ const RawInput = Backbone.View.extend({
     return parseInput(this.inputValue)
   },
   inputValue: jsonInputToRaw(sample1),
-  template: _.template(`
-  <div class="mb-4">
-    <textarea class="data-input" id="data-input" rows="10"><%= this.inputValue %></textarea>
-  </div>
-  `),
+  template: _.template(rawInputTemplate),
   events: {
     'keyup #data-input': 'onChangeTextarea'
   },

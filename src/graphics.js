@@ -26,7 +26,8 @@ This one is also wrong (render and possibly solution), but it seems it's a probl
 
 const PLANE_WIDTH = 35
 
-// TODO: Should be configurable, for example choose which element to transform into the canvas, size, etc.
+const CAMERA_POSITION = [0, -200, 0]
+
 function createScene () {
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setClearColor(0xDDDDDD, 1)
@@ -34,11 +35,10 @@ function createScene () {
   const scene = new THREE.Scene()
 
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
-  const controls = new OrbitControls(camera, renderer.domElement) // eslint-disable-line no-new
+  const controls = new OrbitControls(camera, renderer.domElement)
 
   const resetCameraPosition = () => {
-    // TODO: This position was improvised.
-    camera.position.set(0, -200, 0)
+    camera.position.set(...CAMERA_POSITION)
     controls.update()
   }
 
@@ -84,11 +84,6 @@ function renderGround (scene, ground) {
     ang = Math.atan2(dy, dx)
     plane.rotation.set(0, -ang, 0)
 
-    // TODO: This is necessary only because the planes are center (i.e. position point is in the middle of the plane)
-    //       So this can possibly be simplified so that less calculations are used (it doesn't matter if the plane
-    //       is centered somewhere else).
-    //       This could potentially improve the camera sees the bridge (because of the different center), since right now
-    //       the bridge is a bit moved to the right (i.e. not centered).
     const x = ground[i].x + dx / 2
     const y = ground[i].y + dy / 2
 

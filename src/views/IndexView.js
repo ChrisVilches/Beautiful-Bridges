@@ -3,7 +3,7 @@
 import { createScene, drawBridge } from '../graphics'
 import Backbone from 'backbone'
 import _ from 'underscore'
-import { getInputErrors, deepClone } from '../util'
+import { getInputErrors, deepClone, randomBridge } from '../util'
 import { solve } from '../worker-client'
 import $ from 'jquery'
 import sample1 from '../../assets/sample1.json'
@@ -12,9 +12,7 @@ import sample3 from '../../assets/sample3.json'
 import sample4 from '../../assets/sample4.json'
 import { RawInput } from './RawInput'
 import { FormInput } from './FormInput'
-
-// TODO: Maybe a bit too long (verbose)
-//       For example, the form input and events can be moved to a different view, maybe.
+import indexViewTemplate from './index-view-template.html'
 
 function resizeRendererToDisplaySize (renderer) {
   const canvas = renderer.domElement
@@ -68,7 +66,7 @@ const IndexView = Backbone.View.extend({
   solveLoading: false,
   scene: null,
   currentTab: 'raw',
-  template: _.template($('#index-template').html()),
+  template: _.template(indexViewTemplate),
   events: {
     'click #solve-btn': 'solveUsingCurrentInput',
     'click [data-role="sample-btn"]': 'onClickSampleBtn',
@@ -78,14 +76,16 @@ const IndexView = Backbone.View.extend({
   currentSolutionCost: null,
   onClickSampleBtn: function (e) {
     const btn = $(e.target)
-    const id = Number(btn.attr('data-sample-id'))
+    const id = btn.attr('data-sample-id')
     let sample
     switch (id) {
-      case 1: sample = sample1; break
-      case 2: sample = sample2; break
-      case 3: sample = sample3; break
-      case 4: sample = sample4; break
+      case '1': sample = sample1; break
+      case '2': sample = sample2; break
+      case '3': sample = sample3; break
+      case '4': sample = sample4; break
+      case 'random': sample = randomBridge(); break
     }
+
     this.formInput.setInputData(deepClone(sample))
     this.rawInput.setInputData(deepClone(sample))
 

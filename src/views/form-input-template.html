@@ -1,0 +1,48 @@
+<form class="w-full mb-4">
+  <div class="mb-6 grid md:grid-cols-3 sm:grid-cols-1 gap-1">
+    <div class="form-metadata-input w-full">
+      <label class="input-label-uppercase">
+        Height
+        <input value="<%= this.formInput.height %>" id="input-height" type="text">
+      </label>
+    </div>
+    <div class="form-metadata-input w-full">
+      <label class="input-label-uppercase">
+        Alpha
+        <input value="<%= this.formInput.alpha %>" id="input-alpha" type="text">
+      </label>
+    </div>
+    <div class="form-metadata-input w-full">
+      <label class="input-label-uppercase">
+        Beta
+        <input value="<%= this.formInput.beta %>" id="input-beta" type="text">
+      </label>
+    </div>
+  </div>
+
+  <div class="mb-4 grid grid-cols-3 gap-1 items-center">
+    <% this.formInput.ground.forEach((ground, i)=> { %>
+      <div class="w-full">
+        <input placeholder="x" value="<%= ground.x %>" data-index="<%= i %>" data-role="ground-point" data-type="x"
+          class="w-full appearance-none inline bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
+          type="text">
+      </div>
+      <div class="w-full">
+        <input placeholder="y" value="<%= ground.y %>" data-index="<%= i %>" data-role="ground-point" data-type="y"
+          class="w-full appearance-none inline bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
+          type="text">
+      </div>
+      <div class="w-full">
+        <button data-role="ground-point-remove" data-index="<%= i %>" type="button"
+          class="inline py-2 px-4 text-sm font-medium text-white bg-red-300 hover:bg-red-400 rounded-lg border border-gray-200 focus:z-10 focus:ring-2 focus:ring-blue-700">
+          <i class="las la-times"></i>
+        </button>
+      </div>
+      <% }) %>
+  </div>
+
+  <button id="add-point-btn" type="button"
+    class="py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700">
+    <i class="las la-plus"></i>
+  </button>
+</form>

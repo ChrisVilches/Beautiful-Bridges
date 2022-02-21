@@ -5,8 +5,6 @@ let requestId = 0
 let responseId
 const callbacks = {}
 
-// TODO: A bit weird that only one callback can be set. I'd like to obtain results from many places, in controlled ways.
-//       (Update: I think it's solved now)
 function initializeWorker () {
   if (worker !== null) return
   worker = new Worker('worker.js')

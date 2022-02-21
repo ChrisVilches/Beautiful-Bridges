@@ -19,7 +19,8 @@ const jsCommonOpts = {
   minify: true,
   sourcemap: true,
   watch: WATCH,
-  target: ['es6']
+  target: ['es6'],
+  loader: { '.html': 'text' }
 }
 
 esbuild.build({
@@ -49,7 +50,5 @@ function copyFile (src, dest, watch = false) {
 }
 
 copyFile(path.join(SRC, 'index.html'), path.join(DIST, 'index.html'), WATCH)
-
-// TODO: Copy the folder or use /**/*.jpg would be better.
 copyFile(path.join(ASSETS, 'ground-texture.jpg'), path.join(DIST, 'ground-texture.jpg'), WATCH)
 copyFile(path.join(ASSETS, 'steel-texture.jpg'), path.join(ASSETS, 'steel-texture.jpg'), WATCH)

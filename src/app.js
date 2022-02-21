@@ -26,12 +26,12 @@ $(() => {
       form: 'form'
     },
     index: function () {
-      indexView.currentTab = 'raw' // TODO: Can I remove this?
+      indexView.currentTab = 'raw'
       indexView.render()
       renderBridgeOnce()
     },
     form: function () {
-      indexView.currentTab = 'form' // TODO: Can I remove this?
+      indexView.currentTab = 'form'
       indexView.render()
       renderBridgeOnce()
     }

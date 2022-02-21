@@ -1,3 +1,5 @@
+import _ from 'underscore'
+
 const spaceRegex = /\s+/g
 
 const removeExtraWhiteSpace = str => {
@@ -56,6 +58,34 @@ const getInputErrors = data => {
   return null
 }
 
+const randomBridge = () => {
+  const height = _.random(100, 200)
+  const alpha = _.random(10, 100)
+  const beta = _.random(10, 100)
+  const N = _.random(30, 50)
+
+  const ground = []
+  let lastX = 0
+
+  for (let i = 0; i < N; i++) {
+    const newX = lastX + _.random(10, 20)
+    const newY = _.random(0, height - 1)
+
+    lastX = newX
+    ground.push({
+      x: newX,
+      y: newY
+    })
+  }
+
+  return {
+    height,
+    alpha,
+    beta,
+    ground
+  }
+}
+
 const deepClone = obj => JSON.parse(JSON.stringify(obj))
 
 module.exports = {
@@ -63,5 +93,6 @@ module.exports = {
   getInputErrors,
   parseInput,
   removeExtraWhiteSpace,
-  jsonInputToRaw
+  jsonInputToRaw,
+  randomBridge
 }

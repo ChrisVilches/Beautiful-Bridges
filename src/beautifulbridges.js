@@ -1,5 +1,3 @@
-// TODO: Refactor? Split into more functions.
-
 const sqrt = Math.sqrt
 const pow = Math.pow
 const abs = Math.abs
@@ -50,6 +48,16 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
     arcLeftMax[point] = r
   }
 
+  const collectSolution = solutionFlagArray => {
+    const solutionArcs = []
+
+    for (let i = 0; i < solutionFlagArray.length; i++) {
+      if (solutionFlagArray[i]) solutionArcs.push(i)
+    }
+
+    return solutionArcs
+  }
+
   const dp = n => {
     if (n === N - 1) return costPillar(n)
     if (memo[n] !== -1) return memo[n]
@@ -91,17 +99,12 @@ function beautifulBridgesSolver (N, H, alpha, beta, ground) {
   }
 
   const cost = dp(0)
-  const solutionArcs = []
-
-  for (let i = 0; i < N; i++) {
-    if (solution[i]) solutionArcs.push(i)
-  }
 
   return {
     cost,
     H,
     ground,
-    solution: cost === Infinity ? [] : solutionArcs
+    solution: cost === Infinity ? [] : collectSolution(solution)
   }
 }
 
