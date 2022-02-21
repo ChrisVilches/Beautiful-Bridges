@@ -22,6 +22,8 @@ export const parseInput = content => {
   }
 }
 
+export const isMobile = () => /Mobi|Android/i.test(window?.navigator?.userAgent)
+
 export const jsonInputToRaw = json => {
   const strings = [`${json.ground.length} ${json.height} ${json.alpha} ${json.beta}`]
   json.ground.forEach(ground => {

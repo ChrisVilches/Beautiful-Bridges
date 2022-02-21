@@ -73,17 +73,24 @@
 
       <div id="render-canvas-container" class="mb-4"></div>
 
-      <% if (this.currentSolutionCost !==null) { %>
-        <div class="mb-4">
-          <% if (this.currentSolutionCost===Infinity) { %>
-            <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Impossible</span>
-            <% } else { %>
-              <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Solution
-                found</span>
-              <b>
-                <%= this.currentSolutionCost %>
-              </b>
-              <% } %>
+      <% if (this.showCameraControlsHint) { %>
+        <div class="mb-4 text-sm text-gray-600">
+          <i class="align-middle text-2xl las la-lightbulb"></i>
+          Hold CTRL to move the camera instead of rotating it around a point.
         </div>
         <% } %>
+
+          <% if (this.currentSolutionCost !==null) { %>
+            <div class="mb-4">
+              <% if (this.currentSolutionCost===Infinity) { %>
+                <span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Impossible</span>
+                <% } else { %>
+                  <span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Solution
+                    found</span>
+                  <b>
+                    <%= this.currentSolutionCost %>
+                  </b>
+                  <% } %>
+            </div>
+            <% } %>
     </div>

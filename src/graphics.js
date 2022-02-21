@@ -21,6 +21,8 @@ export function createScene () {
 
   const resetCameraPosition = () => {
     camera.position.set(...CAMERA_POSITION)
+    camera.rotation.set(0, 0, 0)
+    controls.target.set(0, 0, 0)
     controls.update()
   }
 

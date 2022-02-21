@@ -3,7 +3,7 @@
 import { createScene, drawBridge } from '../graphics'
 import Backbone from 'backbone'
 import _ from 'underscore'
-import { getInputErrors, deepClone, randomBridge } from '../util'
+import { getInputErrors, deepClone, randomBridge, isMobile } from '../util'
 import { solve } from '../worker-client'
 import $ from 'jquery'
 import sample1 from 'Samples/sample1.json'
@@ -108,6 +108,7 @@ export const IndexView = Backbone.View.extend({
 
     this.executeSolve(input)
   },
+  showCameraControlsHint: !isMobile(),
   executeSolve: function (input) {
     this.error = getInputErrors(input)
 
