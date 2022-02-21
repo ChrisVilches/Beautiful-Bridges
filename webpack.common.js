@@ -42,6 +42,17 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        // TODO: Should it also transpile node_modules? (to make the bundle 100% ES5, not just my src)
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
         test: /\.html$/i,
         loader: 'html-loader'
       },
