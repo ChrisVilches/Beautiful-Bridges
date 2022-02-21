@@ -126,3 +126,20 @@
   @apply focus:outline-none;
   @apply focus:border-gray-500;
 }
+
+.sample-btn {
+  @apply py-2;
+  @apply px-4;
+  @apply text-sm;
+  @apply font-medium;
+  @apply text-gray-900;
+  @apply bg-white;
+  @apply border;
+  @apply border-gray-200;
+  @apply hover:bg-gray-100;
+  @apply hover:text-blue-700;
+  @apply focus:z-10;
+  @apply focus:ring-2;
+  @apply focus:ring-blue-700;
+  @apply focus:text-blue-700;
+}

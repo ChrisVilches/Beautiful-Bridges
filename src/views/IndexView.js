@@ -94,7 +94,7 @@ const IndexView = Backbone.View.extend({
 
     $('html, body').animate({
       scrollTop: this.$el.find('#render-canvas-container').offset().top
-    }, 100)
+    }, 0)
   },
   solveUsingCurrentInput: function () {
     let input

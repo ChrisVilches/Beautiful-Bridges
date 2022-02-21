@@ -13,6 +13,7 @@ if (!fs.existsSync(DIST)) {
 
 // TODO: Should be target: ES5
 // TODO: Asset copying could be better.
+// TODO: It does not copy all images (it seems).
 
 const jsCommonOpts = {
   bundle: true,
