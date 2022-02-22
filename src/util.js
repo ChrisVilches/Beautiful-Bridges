@@ -1,4 +1,5 @@
 import _ from 'underscore'
+import { FORM_MAX_GROUND } from './constants'
 
 const spaceRegex = /\s+/g
 
@@ -80,7 +81,9 @@ export const randomBridge = () => {
   const height = _.random(100, 200)
   const alpha = _.random(10, 100)
   const beta = _.random(10, 100)
-  const N = _.random(30, 50)
+
+  const minN = Math.max(2, FORM_MAX_GROUND - 10)
+  const N = _.random(minN, FORM_MAX_GROUND)
 
   const ground = []
   let lastX = 0

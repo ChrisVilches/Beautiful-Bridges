@@ -6,6 +6,7 @@ import { deepClone } from '../util'
 import sample1 from 'Samples/sample1.json'
 import $ from 'jquery'
 import formInputTemplate from './form-input-template.html'
+import { FORM_MAX_GROUND } from '../constants'
 
 export const FormInput = Backbone.View.extend({
   initialize: function () {
@@ -59,6 +60,9 @@ export const FormInput = Backbone.View.extend({
   },
   render: function () {
     if (!this.$el.is(':visible')) return
-    this.$el.html(this.template({ form: this.formInput }))
+    this.$el.html(this.template({
+      form: this.formInput,
+      disableAddGroundBtn: this.formInput.ground.length >= FORM_MAX_GROUND
+    }))
   }
 })
