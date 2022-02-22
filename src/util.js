@@ -65,6 +65,7 @@ export const getInputErrors = data => {
 
     if (x1 >= x2) return xErr
     if (!(x1 >= 0 && x1 <= 100000)) return xErr
+    if (!(x2 >= 0 && x2 <= 100000)) return xErr
   }
 
   for (let i = 0; i < ground.length; i++) {
