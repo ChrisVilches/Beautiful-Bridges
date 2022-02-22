@@ -172,10 +172,6 @@ function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
 
   scene.traverse(function (child) {
     if (child instanceof THREE.Mesh) {
-      // TODO: Test this new way of centering (solves the problem that happened when removing points from the start in the
-      //       random bridge)
-      //       Test it for many types of bridges, not just the ones similar to the random ones. The random ones always start
-      //       with low X values. Test different shapes of bridges with different distribution of X and Y values.
       child.position.set((child.position.x - xLength / 2) - ground[0].x, child.position.y, child.position.z - bridgeHeight / 2)
     }
   })
