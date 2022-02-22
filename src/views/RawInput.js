@@ -8,7 +8,6 @@ import rawInputTemplate from './raw-input-template.html'
 
 export const RawInput = Backbone.View.extend({
   initialize: function (args) {
-    console.log('Raw input initialize')
     this.callParentSolve = args.solve
   },
   setInputData: function (data) {
@@ -32,6 +31,9 @@ export const RawInput = Backbone.View.extend({
     }
   },
   render: function () {
+    if (!this.$el.is(':visible')) return
+
+    console.log('Render RAW view')
     this.$el.html(this.template())
     return this
   }

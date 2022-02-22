@@ -3,19 +3,19 @@
     <div class="form-metadata-input w-full">
       <label class="input-label-uppercase">
         Height
-        <input value="<%= this.formInput.height %>" id="input-height" type="text">
+        <input value="<%= form.height %>" id="input-height" type="text">
       </label>
     </div>
     <div class="form-metadata-input w-full">
       <label class="input-label-uppercase">
         Alpha
-        <input value="<%= this.formInput.alpha %>" id="input-alpha" type="text">
+        <input value="<%= form.alpha %>" id="input-alpha" type="text">
       </label>
     </div>
     <div class="form-metadata-input w-full">
       <label class="input-label-uppercase">
         Beta
-        <input value="<%= this.formInput.beta %>" id="input-beta" type="text">
+        <input value="<%= form.beta %>" id="input-beta" type="text">
       </label>
     </div>
   </div>
@@ -25,7 +25,7 @@
   </label>
 
   <div class="mb-4 grid grid-cols-3 gap-1 items-center">
-    <% this.formInput.ground.forEach((ground, i)=> { %>
+    <% form.ground.forEach((ground, i)=> { %>
       <div class="w-full">
         <input placeholder="x" value="<%= ground.x %>" data-index="<%= i %>" data-role="ground-point" data-type="x"
           class="w-full appearance-none inline bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"

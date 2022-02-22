@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import { createScene, drawBridge } from '../graphics'
+import { createScene } from '../graphics'
 import Backbone from 'backbone'
 import _ from 'underscore'
 import { getInputErrors, deepClone, randomBridge, isMobile } from '../util'
@@ -14,21 +14,11 @@ import { RawInput } from './RawInput'
 import { FormInput } from './FormInput'
 import indexViewTemplate from './index-view-template.html'
 
-function resizeRendererToDisplaySize (renderer) {
-  const canvas = renderer.domElement
-  const width = canvas.clientWidth
-  const height = canvas.clientHeight
-  const needResize = (canvas.width !== width || canvas.height !== height) && width > 0 && height > 0
-  if (needResize) {
-    renderer.setSize(width, height, false)
-  }
-  return needResize
-}
-
 export const IndexView = Backbone.View.extend({
   el: '#container',
   initialize: function () {
     Backbone.Subviews.add(this)
+    this.listenTo(this.model, 'change', this.render)
     this.initializeGraphics()
   },
   subviewCreators: {
@@ -42,38 +32,16 @@ export const IndexView = Backbone.View.extend({
     }
   },
   initializeGraphics: function () {
-    function render () {
-      requestAnimationFrame(render)
-      renderer.render(scene, camera)
-
-      if (resizeRendererToDisplaySize(renderer)) {
-        const canvas = renderer.domElement
-        camera.aspect = canvas.clientWidth / canvas.clientHeight
-        camera.updateProjectionMatrix()
-      }
-    }
-
-    const { renderer, scene, camera, resetCameraPosition } = createScene(this.$el.find('#render-canvas-container'))
-    this.renderer = renderer
-    this.scene = scene
-    this.resetCameraPosition = resetCameraPosition
-    render()
+    this.graphics = createScene(this.$el, '#render-canvas-container')
   },
-  resetCameraPosition: () => { throw new Error('Cannot reset camera yet') },
-  resetCameraPositionHandle: function () {
-    this.resetCameraPosition()
-  },
-  solveLoading: false,
-  scene: null,
-  currentTab: 'raw',
   template: _.template(indexViewTemplate),
   events: {
     'click #solve-btn': 'solveUsingCurrentInput',
     'click [data-role="sample-btn"]': 'onClickSampleBtn',
-    'click #reset-camera-btn': 'resetCameraPositionHandle'
+    'click #reset-camera-btn': function () {
+      this.graphics.resetCameraPosition()
+    }
   },
-  error: null,
-  currentSolutionCost: null,
   onClickSampleBtn: function (e) {
     const btn = $(e.target)
     const id = btn.attr('data-sample-id')
@@ -88,8 +56,6 @@ export const IndexView = Backbone.View.extend({
 
     this.formInput.setInputData(deepClone(sample))
     this.rawInput.setInputData(deepClone(sample))
-
-    this.render()
     this.solveUsingCurrentInput()
 
     $('html, body').animate({
@@ -97,39 +63,41 @@ export const IndexView = Backbone.View.extend({
     }, 0)
   },
   solveUsingCurrentInput: function () {
-    if (this.solveLoading) return
+    if (this.model.isLoading()) return
 
-    let input
-    if (this.currentTab === 'raw') {
-      input = this.rawInput.getInputData()
-    } else {
-      input = this.formInput.getInputData()
-    }
+    const input = (this.model.isRaw() ? this.rawInput : this.formInput).getInputData()
 
     this.executeSolve(input)
   },
-  showCameraControlsHint: !isMobile(),
   executeSolve: function (input) {
-    this.error = getInputErrors(input)
+    this.model.set({ error: getInputErrors(input) })
 
-    if (!this.error) {
-      const { N, H, alpha, beta, ground } = input
-      this.solveLoading = true
-      this.render()
-      solve(N, H, alpha, beta, ground, (cost, solution) => {
-        this.currentSolutionCost = cost
-        drawBridge(this.scene, H, ground, solution)
-        this.solveLoading = false
-        this.render()
-      })
-    } else {
-      this.solveLoading = false
-      this.render()
+    if (this.model.get('error')) {
+      return this.model.set({ solveLoading: false })
     }
+
+    const { N, H, alpha, beta, ground } = input
+
+    this.model.set({ solveLoading: true })
+    solve(N, H, alpha, beta, ground, (cost, solution) => {
+      this.graphics.drawBridge(H, ground, solution)
+      this.model.set({
+        currentSolutionCost: cost,
+        solveLoading: false
+      })
+    })
   },
   render: function () {
-    this.$el.html(this.template())
-    this.$el.find('#render-canvas-container').html(this.renderer.domElement)
+    console.log('Render index view')
+    this.$el.html(this.template({
+      showCameraControlsHint: !isMobile(),
+      cost: this.model.get('currentSolutionCost'),
+      error: this.model.get('error'),
+      isLoading: this.model.isLoading(),
+      isRaw: this.model.isRaw(),
+      isForm: this.model.isForm()
+    }))
+    this.graphics.updateDOM()
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
 
     return this

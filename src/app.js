@@ -4,6 +4,7 @@ import 'flowbite'
 import Backbone from 'backbone'
 import BackboneSubview from 'backbone-subviews'
 import { initializeWorker } from './worker-client'
+import { IndexViewState } from './models/IndexViewState'
 import './styles.css'
 
 Backbone.View.extend(BackboneSubview)
@@ -30,7 +31,9 @@ $(() => {
   configMathJax()
   initializeWorker()
 
-  const indexView = new IndexView()
+  const indexView = new IndexView({
+    model: new IndexViewState()
+  })
 
   let initialRenderFinished = false
 
@@ -46,13 +49,11 @@ $(() => {
       form: 'form'
     },
     index: function () {
-      indexView.currentTab = 'raw'
-      indexView.render()
+      indexView.model.set({ currentTab: 'raw' })
       renderBridgeOnce()
     },
     form: function () {
-      indexView.currentTab = 'form'
-      indexView.render()
+      indexView.model.set({ currentTab: 'form' })
       renderBridgeOnce()
     }
   })

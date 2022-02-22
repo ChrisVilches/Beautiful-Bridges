@@ -9,7 +9,8 @@ import formInputTemplate from './form-input-template.html'
 
 export const FormInput = Backbone.View.extend({
   initialize: function () {
-    console.log('Form input initialize')
+    this.formInput = deepClone(sample1)
+    this.listenTo(this, 'ground-array-changed', this.render)
   },
   setInputData: function (data) {
     this.formInput = data
@@ -24,7 +25,7 @@ export const FormInput = Backbone.View.extend({
     }
   },
   template: _.template(formInputTemplate),
-  formInput: deepClone(sample1),
+  formInput: null,
   onChangeInputHeight: function (e) { this.formInput.height = e.target.value },
   onChangeInputAlpha: function (e) { this.formInput.alpha = e.target.value },
   onChangeInputBeta: function (e) { this.formInput.beta = e.target.value },
@@ -39,14 +40,14 @@ export const FormInput = Backbone.View.extend({
     const input = $(e.currentTarget)
     const idx = Number(input.attr('data-index'))
     this.formInput.ground.splice(idx, 1)
-    this.render()
+    this.trigger('ground-array-changed')
   },
   onClickAddInputGround: function () {
     this.formInput.ground.push({
       x: '',
       y: ''
     })
-    this.render()
+    this.trigger('ground-array-changed')
   },
   events: {
     'change #input-height': 'onChangeInputHeight',
@@ -57,7 +58,11 @@ export const FormInput = Backbone.View.extend({
     'click [data-role="ground-point-remove"]': 'onClickRemoveInputGround'
   },
   render: function () {
-    this.$el.html(this.template())
+    if (!this.$el.is(':visible')) return
+
+    console.log('Render forminput')
+
+    this.$el.html(this.template({ form: this.formInput }))
     return this
   }
 })

@@ -10,7 +10,18 @@ const PLANE_WIDTH = 35
 
 const CAMERA_POSITION = [0, -200, 0]
 
-export function createScene () {
+function resizeRendererToDisplaySize (renderer) {
+  const canvas = renderer.domElement
+  const width = canvas.clientWidth
+  const height = canvas.clientHeight
+  const needResize = (canvas.width !== width || canvas.height !== height) && width > 0 && height > 0
+  if (needResize) {
+    renderer.setSize(width, height, false)
+  }
+  return needResize
+}
+
+export function createScene (domContainer, canvasSelector) {
   const renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setClearColor(0xDDDDDD, 1)
 
@@ -26,10 +37,32 @@ export function createScene () {
     controls.update()
   }
 
+  function renderCanvas () {
+    requestAnimationFrame(renderCanvas)
+    renderer.render(scene, camera)
+
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement
+      camera.aspect = canvas.clientWidth / canvas.clientHeight
+      camera.updateProjectionMatrix()
+    }
+  }
+
   resetCameraPosition()
 
   scene.add(camera)
-  return { renderer, scene, camera, resetCameraPosition }
+
+  renderCanvas()
+
+  return {
+    resetCameraPosition,
+    drawBridge: function (bridgeHeight, ground, solutionArcs) {
+      drawBridge(scene, bridgeHeight, ground, solutionArcs)
+    },
+    updateDOM: function () {
+      domContainer.find(canvasSelector).html(renderer.domElement)
+    }
+  }
 }
 
 function createMaterialWithTexture (imageUrl, color) {
@@ -125,7 +158,7 @@ function renderPillars (scene, solutionArcs, bridgeHeight, ground) {
   }
 }
 
-export function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
+function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
   scene.remove.apply(scene, scene.children)
 
   renderGround(scene, ground)
