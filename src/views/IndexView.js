@@ -88,7 +88,6 @@ export const IndexView = Backbone.View.extend({
     })
   },
   render: function () {
-    console.log('Render index view')
     this.$el.html(this.template({
       showCameraControlsHint: !isMobile(),
       cost: this.model.get('currentSolutionCost'),
@@ -97,9 +96,8 @@ export const IndexView = Backbone.View.extend({
       isRaw: this.model.isRaw(),
       isForm: this.model.isForm()
     }))
+
     this.graphics.updateDOM()
     window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
-
-    return this
   }
 })

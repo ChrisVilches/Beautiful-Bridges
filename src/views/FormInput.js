@@ -59,10 +59,6 @@ export const FormInput = Backbone.View.extend({
   },
   render: function () {
     if (!this.$el.is(':visible')) return
-
-    console.log('Render forminput')
-
     this.$el.html(this.template({ form: this.formInput }))
-    return this
   }
 })
