@@ -2,26 +2,22 @@
 
 import { beautifulBridgesSolver } from './beautifulbridges'
 import { deepClone } from './util'
+import _ from 'underscore'
 
 console.log('Web worker loaded')
 
-const solve = args => {
-  console.log('Solving:', args)
-
-  const N = args.N
-  const H = args.H
-  const alpha = args.alpha
-  const beta = args.beta
-  const ground = args.ground
-  return beautifulBridgesSolver(N, H, alpha, beta, ground)
-}
+const solve = ({ N, H, alpha, beta, ground }) => beautifulBridgesSolver(N, H, alpha, beta, ground)
 
 self.onmessage = function (e) {
+  let solveArgs
+
   switch (e.data.cmd) {
     case 'solve':
+      solveArgs = _.pick(deepClone(e.data.args), 'N', 'H', 'alpha', 'beta', 'ground')
+
+      console.log('Begin solving', solveArgs)
+
       setTimeout(() => {
-        const solveArgs = deepClone(e.data.args)
-        delete solveArgs.requestId
         self.postMessage({ type: 'solve-response', body: { ...solve(solveArgs), requestId: e.data.args.requestId } })
       }, 500)
       break
