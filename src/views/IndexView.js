@@ -18,7 +18,7 @@ export const IndexView = Backbone.View.extend({
   el: '#container',
   initialize: function () {
     Backbone.Subviews.add(this)
-    this.listenTo(this.model, 'change', this.render)
+    this.listenTo(this.state, 'change', this.render)
     this.initializeGraphics()
   },
   subviewCreators: {
@@ -63,25 +63,25 @@ export const IndexView = Backbone.View.extend({
     }, 0)
   },
   solveUsingCurrentInput: function () {
-    if (this.model.isLoading()) return
+    if (this.state.isLoading()) return
 
-    const input = (this.model.isRaw() ? this.rawInput : this.formInput).getInputData()
+    const input = (this.state.isRaw() ? this.rawInput : this.formInput).getInputData()
 
     this.executeSolve(input)
   },
   executeSolve: function (input) {
-    this.model.set({ error: getInputErrors(input) })
+    this.state.set({ error: getInputErrors(input) })
 
-    if (this.model.get('error')) {
-      return this.model.set({ solveLoading: false })
+    if (this.state.get('error')) {
+      return this.state.set({ solveLoading: false })
     }
 
     const { N, H, alpha, beta, ground } = input
 
-    this.model.set({ solveLoading: true })
+    this.state.set({ solveLoading: true })
     solve(N, H, alpha, beta, ground, (cost, solution) => {
       this.graphics.drawBridge(H, ground, solution)
-      this.model.set({
+      this.state.set({
         currentSolutionCost: cost,
         solveLoading: false
       })
@@ -90,11 +90,11 @@ export const IndexView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template({
       showCameraControlsHint: !isMobile(),
-      cost: numberFormat(this.model.get('currentSolutionCost')),
-      error: this.model.get('error'),
-      isLoading: this.model.isLoading(),
-      isRaw: this.model.isRaw(),
-      isForm: this.model.isForm()
+      cost: numberFormat(this.state.get('currentSolutionCost')),
+      error: this.state.get('error'),
+      isLoading: this.state.isLoading(),
+      isRaw: this.state.isRaw(),
+      isForm: this.state.isForm()
     }))
 
     this.graphics.updateDOM()

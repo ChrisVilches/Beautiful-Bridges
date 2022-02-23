@@ -32,7 +32,7 @@ $(() => {
   initializeWorker()
 
   const indexView = new IndexView({
-    model: new IndexViewState()
+    state: new IndexViewState()
   })
 
   let initialRenderFinished = false
@@ -49,11 +49,11 @@ $(() => {
       form: 'form'
     },
     index: function () {
-      indexView.model.set({ currentTab: 'raw' })
+      indexView.state.set({ currentTab: 'raw' })
       renderBridgeOnce()
     },
     form: function () {
-      indexView.model.set({ currentTab: 'form' })
+      indexView.state.set({ currentTab: 'form' })
       renderBridgeOnce()
     }
   })
