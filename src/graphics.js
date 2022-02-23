@@ -98,8 +98,7 @@ function renderGround (scene, ground) {
     const geometry = new THREE.PlaneGeometry(length, PLANE_WIDTH)
     const plane = new THREE.Mesh(geometry, groundMaterial())
 
-    let ang = Math.atan(dx / dy)
-    ang = Math.atan2(dy, dx)
+    const ang = Math.atan2(dy, dx)
     plane.rotation.set(0, -ang, 0)
 
     const x = ground[i].x + dx / 2
