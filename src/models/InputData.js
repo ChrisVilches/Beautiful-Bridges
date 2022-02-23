@@ -1,4 +1,5 @@
 import Backbone from 'backbone'
+import { deepClone } from '../util'
 
 export const InputData = Backbone.Model.extend({
   defaults: {
@@ -8,18 +9,27 @@ export const InputData = Backbone.Model.extend({
     ground: []
   },
   addGround: function () {
-    this.get('ground').push({
-      x: '',
-      y: ''
+    this.set({
+      ground: this.get('ground').concat([{
+        x: '',
+        y: ''
+      }])
     })
+
     this.trigger('change:ground:length')
   },
   removeGround: function (i) {
-    this.get('ground').splice(i, 1)
+    const ground = deepClone(this.get('ground'))
+
+    ground.splice(i, 1)
+    this.set({ ground })
     this.trigger('change:ground:length')
   },
   updateGround: function (i, type, value) {
-    this.get('ground')[i][type] = value
+    const ground = deepClone(this.get('ground'))
+
+    ground[i][type] = value
+    this.set({ ground })
   },
   toObject: function () {
     return {
