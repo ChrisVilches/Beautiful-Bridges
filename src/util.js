@@ -1,9 +1,10 @@
 import _ from 'underscore'
 import { FORM_MAX_GROUND } from './constants'
 
-const spaceRegex = /\s+/g
+const SPACE_REGEX = /\s+/g
+const NUMBER_FORMAT_REGEX = /\B(?=(\d{3})+(?!\d))/g
 
-const removeExtraWhiteSpace = str => str.replace(spaceRegex, ' ').trim()
+const removeExtraWhiteSpace = str => str.replace(SPACE_REGEX, ' ').trim()
 
 export const parseInput = content => {
   try {
@@ -79,7 +80,7 @@ export const getInputErrors = data => {
 
 export const numberFormat = (num, separator = ',') => {
   if (typeof num === 'number' && num !== Infinity) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+    return num.toString().replace(NUMBER_FORMAT_REGEX, separator)
   }
 
   return num
