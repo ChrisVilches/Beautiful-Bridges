@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#MathJax_Message {
+  display: none;
+}
+
 .header-title {
   font-family: 'Oswald', sans-serif;
   @apply inline-block;
