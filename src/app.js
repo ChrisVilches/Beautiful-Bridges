@@ -44,3 +44,5 @@ $(() => {
   new Workspace() // eslint-disable-line no-new
   Backbone.history.start()
 })
+
+$(() => $('.show-on-js-ready').show())

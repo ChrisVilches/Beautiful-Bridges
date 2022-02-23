@@ -45,7 +45,7 @@ export const InputData = Backbone.Model.extend({
       height: Number(this.get('height')),
       alpha: Number(this.get('alpha')),
       beta: Number(this.get('beta')),
-      ground: this.get('ground').map(o => ({ x: o.x, y: o.y }))
+      ground: this.get('ground')
     }
   }
 })

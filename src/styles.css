@@ -6,6 +6,10 @@
   display: none;
 }
 
+.show-on-js-ready {
+  @apply hidden;
+}
+
 .header-title {
   font-family: 'Oswald', sans-serif;
   @apply inline-block;
