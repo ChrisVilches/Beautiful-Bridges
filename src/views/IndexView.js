@@ -16,7 +16,8 @@ import indexViewTemplate from './index-view-template.html'
 
 export const IndexView = Backbone.View.extend({
   el: '#container',
-  initialize: function () {
+  initialize: function ({ state }) {
+    this.state = state
     Backbone.Subviews.add(this)
     this.listenTo(this.state, 'change', this.render)
     this.initializeGraphics()

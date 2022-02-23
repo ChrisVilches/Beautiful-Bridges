@@ -7,8 +7,8 @@ import sample1 from 'Samples/sample1.json'
 import rawInputTemplate from './raw-input-template.html'
 
 export const RawInput = Backbone.View.extend({
-  initialize: function (args) {
-    this.callParentSolve = args.solve
+  initialize: function ({ solve }) {
+    this.callParentSolve = solve
   },
   setInputData: function (data) {
     this.inputValue = jsonInputToRaw(data)
