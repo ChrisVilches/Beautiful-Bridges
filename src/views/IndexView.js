@@ -3,7 +3,7 @@
 import { createScene } from '../graphics'
 import Backbone from 'backbone'
 import _ from 'underscore'
-import { getInputErrors, deepClone, randomBridge, isMobile } from '../util'
+import { getInputErrors, deepClone, randomBridge, isMobile, numberFormat } from '../util'
 import { solve } from '../worker-client'
 import $ from 'jquery'
 import sample1 from 'Samples/sample1.json'
@@ -90,7 +90,7 @@ export const IndexView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template({
       showCameraControlsHint: !isMobile(),
-      cost: this.model.get('currentSolutionCost'),
+      cost: numberFormat(this.model.get('currentSolutionCost')),
       error: this.model.get('error'),
       isLoading: this.model.isLoading(),
       isRaw: this.model.isRaw(),

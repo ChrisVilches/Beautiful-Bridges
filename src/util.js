@@ -77,6 +77,14 @@ export const getInputErrors = data => {
   return null
 }
 
+export const numberFormat = (num, separator = ',') => {
+  if (typeof num === 'number' && num !== Infinity) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+  }
+
+  return num
+}
+
 export const randomBridge = () => {
   const height = _.random(100, 200)
   const alpha = _.random(10, 100)
