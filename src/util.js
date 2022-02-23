@@ -11,8 +11,8 @@ export const parseInput = content => {
     const lines = content.split('\n').filter(line => line.length > 0)
     const [N, H, alpha, beta] = removeExtraWhiteSpace(lines[0]).split(' ').map(Number)
     const ground = []
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i + 1]
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i]
       if (typeof line !== 'string') continue
       const [x, y] = removeExtraWhiteSpace(line).split(' ').map(Number)
       ground.push({ x, y })
