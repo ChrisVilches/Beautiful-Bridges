@@ -8,7 +8,7 @@ Source problem statement: https://open.kattis.com/problems/beautifulbridges
 
 My solutions: solved in [C++](https://github.com/ChrisVilches/Algorithms/blob/main/kattis/beautifulbridges.cpp) and [Javascript](https://github.com/ChrisVilches/Algorithms/blob/main/kattis/beautifulbridges.js).
 
-See a [live demo](http://cloud.chrisvilches.com/live_demos/beautiful-bridges/) (click on the *Sample* buttons).
+See a [live demo](https://beautiful-bridges.chrisvilches.com/) (click on the *Sample* buttons).
 
 ## Tools
 
