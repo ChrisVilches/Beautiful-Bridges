@@ -147,14 +147,23 @@ function renderOnePillar (scene, bridgeHeight, ground, position, radius) {
 }
 
 function renderPillars (scene, solutionArcs, bridgeHeight, ground) {
+  if (solutionArcs.length === 0) return
+
+  let prevRadius = Infinity
+
   for (let i = 0; i < solutionArcs.length - 1; i++) {
     const from = solutionArcs[i]
     const to = solutionArcs[i + 1]
     const radius = (ground[to].x - ground[from].x) / 2
+    renderOnePillar(scene, bridgeHeight, ground, from, Math.min(radius, prevRadius))
 
-    renderOnePillar(scene, bridgeHeight, ground, from, radius)
-    renderOnePillar(scene, bridgeHeight, ground, to, radius)
+    prevRadius = radius
   }
+
+  const from = solutionArcs[solutionArcs.length - 2]
+  const to = solutionArcs[solutionArcs.length - 1]
+  const radius = (ground[to].x - ground[from].x) / 2
+  renderOnePillar(scene, bridgeHeight, ground, to, radius)
 }
 
 function drawBridge (scene, bridgeHeight, ground, solutionArcs) {
